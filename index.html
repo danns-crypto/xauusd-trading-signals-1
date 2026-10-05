@@ -179,5 +179,37 @@ function testSignal() {
     document.getElementById("signal").innerHTML = randomSignal;
 }
 </script>
+function testSignal() {
+
+    const signals = ["BUY", "SELL", "WAIT"];
+    const signal = signals[Math.floor(Math.random() * signals.length)];
+
+    document.getElementById("signal").innerHTML =
+        signal === "BUY" ? "🟢 BUY" :
+        signal === "SELL" ? "🔴 SELL" :
+        "🟡 WAIT";
+
+    if (signal === "BUY") {
+        document.querySelectorAll(".box p")[4].innerHTML = "2650.00";
+        document.querySelectorAll(".box p")[5].innerHTML = "2645.00";
+        document.querySelectorAll(".box p")[6].innerHTML = "2660.00";
+        document.querySelectorAll(".box p")[7].innerHTML = "1:2";
+    }
+
+    if (signal === "SELL") {
+        document.querySelectorAll(".box p")[4].innerHTML = "2650.00";
+        document.querySelectorAll(".box p")[5].innerHTML = "2655.00";
+        document.querySelectorAll(".box p")[6].innerHTML = "2640.00";
+        document.querySelectorAll(".box p")[7].innerHTML = "1:2";
+    }
+
+    if (signal === "WAIT") {
+        document.querySelectorAll(".box p")[4].innerHTML = "---";
+        document.querySelectorAll(".box p")[5].innerHTML = "---";
+        document.querySelectorAll(".box p")[6].innerHTML = "---";
+        document.querySelectorAll(".box p")[7].innerHTML = "---";
+    }
+}
+</script>
 </body>
 </html>
