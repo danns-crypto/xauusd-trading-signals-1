@@ -166,7 +166,17 @@
 </footer>
 <script>
 function testSignal() {
-    document.getElementById("signal").innerHTML = "🟢 BUY";
+
+    const signals = [
+        "🟢 BUY",
+        "🔴 SELL",
+        "🟡 WAIT"
+    ];
+
+    const randomSignal =
+        signals[Math.floor(Math.random() * signals.length)];
+
+    document.getElementById("signal").innerHTML = randomSignal;
 }
 </script>
 </body>
