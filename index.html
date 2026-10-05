@@ -86,10 +86,13 @@
 
         <h2>Current Signal</h2>
 
-        <div class="signal waiting">
-            🟡 WAIT
-        </div>
+        <div class="signal waiting" id="signal">
+    🟡 WAIT
+</div>
 
+<button onclick="testSignal()">
+    Test Signal
+</button>
         <p style="text-align:center;">
             No confirmed trading setup
         </p>
@@ -161,6 +164,10 @@
 <footer>
     XAUUSD Trading Signals © 2026
 </footer>
-
+<script>
+function testSignal() {
+    document.getElementById("signal").innerHTML = "🟢 BUY";
+}
+</script>
 </body>
 </html>
