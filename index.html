@@ -227,8 +227,9 @@ async function testSignal() {
 
     try {
         const response = await fetch(
-            "https://xaus.com/api/v1/intraday?symbol=xau&hours=24"
-        );
+    "https://xaus.com/api/v1/intraday?symbol=xau&hours=24&_=" + Date.now(),
+    { cache: "no-store" }
+);
 
         if (!response.ok) {
             throw new Error("Could not load gold prices");
