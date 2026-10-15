@@ -182,7 +182,7 @@ async function testSignal() {
 
         const data = await response.json();
 
-        const prices = data
+        const prices = data.points
             .map(item => Number(item.p))
             .filter(price => Number.isFinite(price) && price > 0);
 
