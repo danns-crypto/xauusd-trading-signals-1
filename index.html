@@ -246,7 +246,8 @@ async function testSignal() {
     .sort((a, b) => Number(a.t) - Number(b.t));
 
 const prices = points.map(item => Number(item.p));
-
+const backtestResults = backtest15Minutes(points);
+console.log("15-minute backtest results:", backtestResults);
    console.log("Historical price records:", prices.length);  
         if (prices.length < 30) {
             throw new Error("Not enough price data");
