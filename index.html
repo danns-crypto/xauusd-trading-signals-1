@@ -247,6 +247,7 @@ async function testSignal() {
 
 const prices = points.map(item => Number(item.p));
 
+   console.log("Historical price records:", prices.length);  
         if (prices.length < 30) {
             throw new Error("Not enough price data");
         }
