@@ -273,7 +273,8 @@ signalElement.innerHTML =
     (signal === "BUY" ? "🟢 " :
      signal === "SELL" ? "🔴 " : "🟡 ") +
     signal +
-    "<br>Latest Gold Price: " + prices[prices.length - 1].toFixed(2) +
+    "<br>Historical Price Records: " + prices.length +
+"<br>Latest Gold Price: " + prices[prices.length - 1].toFixed(2) +
     "<br>EMA 9: " + ema9.toFixed(2) +
     "<br>EMA 21: " + ema21.toFixed(2) +
     "<br>RSI 14: " + rsi.toFixed(2) +
