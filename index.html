@@ -290,13 +290,26 @@ signalElement.innerHTML =
         console.error(error);
     }
 }
-   function backtest15Minutes(points) {
+   
+function backtest15Minutes(points) {
     const results = [];
-    const sortedPoints = [...points].sort(
-        (a, b) => Number(a.t) - Number(b.t)
-    );
+
+    const sortedPoints = [...points]
+        .filter(item =>
+            Number.isFinite(Number(item.p)) &&
+            Number(item.p) > 0 &&
+            Number.isFinite(Number(item.t))
+        )
+        .sort((a, b) => Number(a.t) - Number(b.t));
+
+    let nextAllowedTime = 0;
 
     for (let i = 30; i < sortedPoints.length; i++) {
+        const entryTime = Number(sortedPoints[i].t);
+
+        // Do not start another trade while one is being tested.
+        if (entryTime < nextAllowedTime) continue;
+
         const history = sortedPoints.slice(0, i + 1);
         const prices = history.map(item => Number(item.p));
 
@@ -314,30 +327,36 @@ signalElement.innerHTML =
             signal = "SELL";
         }
 
+        if (signal === "WAIT") continue;
+
+        const targetTime = entryTime + 900;
+
         const future = sortedPoints.find(
-            item => Number(item.t) >= Number(sortedPoints[i].t) + 900
+            item => Number(item.t) >= targetTime
         );
 
-        if (!future || signal === "WAIT") continue;
+        if (!future) continue;
 
         const entry = Number(sortedPoints[i].p);
         const exit = Number(future.p);
-
-        const won =
-            signal === "BUY" ? exit > entry :
-            signal === "SELL" ? exit < entry : false;
+        const change = signal === "BUY"
+            ? exit - entry
+            : entry - exit;
 
         results.push({
             signal,
             entry,
             exit,
-            won,
-            change: signal === "BUY" ? exit - entry : entry - exit
+            won: change > 0,
+            change
         });
+
+        nextAllowedTime = Number(future.t);
     }
 
     return results;
 }
+
    
 function showBacktestResults(results) {
     const wins = results.filter(r => r.change > 0).length;
