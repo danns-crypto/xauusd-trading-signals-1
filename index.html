@@ -272,9 +272,12 @@ signalElement.innerHTML =
     (signal === "BUY" ? "🟢 " :
      signal === "SELL" ? "🔴 " : "🟡 ") +
     signal +
+    "<br>Latest Gold Price: " + prices[prices.length - 1].toFixed(2) +
     "<br>EMA 9: " + ema9.toFixed(2) +
     "<br>EMA 21: " + ema21.toFixed(2) +
-    "<br>RSI 14: " + rsi.toFixed(2);
+    "<br>RSI 14: " + rsi.toFixed(2) +
+    "<br>Latest Data Time: " +
+    new Date(Number(points[points.length - 1].t) * 1000).toLocaleString();
 
     } catch (error) {
         signalElement.innerHTML =
