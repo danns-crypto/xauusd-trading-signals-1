@@ -236,9 +236,15 @@ async function testSignal() {
 
         const data = await response.json();
 
-        const prices = data.points
-            .map(item => Number(item.p))
-            .filter(price => Number.isFinite(price) && price > 0);
+        const points = data.points
+    .filter(item =>
+        Number.isFinite(Number(item.p)) &&
+        Number(item.p) > 0 &&
+        Number.isFinite(Number(item.t))
+    )
+    .sort((a, b) => Number(a.t) - Number(b.t));
+
+const prices = points.map(item => Number(item.p));
 
         if (prices.length < 30) {
             throw new Error("Not enough price data");
