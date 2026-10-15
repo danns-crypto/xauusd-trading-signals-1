@@ -336,7 +336,27 @@ signalElement.innerHTML =
     }
 
     return results;
-} 
+}
+   
+function showBacktestResults(results) {
+    const wins = results.filter(r => r.change > 0).length;
+    const losses = results.filter(r => r.change < 0).length;
+    const ties = results.filter(r => r.change === 0).length;
+    const total = results.length;
+
+    const winRate = total > 0
+        ? (wins / total * 100).toFixed(1)
+        : "0.0";
+
+    document.getElementById("backtestResults").innerHTML =
+        "<h3>15-Minute Backtest</h3>" +
+        "<p>Total trades: " + total + "</p>" +
+        "<p>Wins: " + wins + "</p>" +
+        "<p>Losses: " + losses + "</p>" +
+        "<p>Ties: " + ties + "</p>" +
+        "<p>Win rate: " + winRate + "%</p>";
+}
+
 </script>
 </body>
 </html>
