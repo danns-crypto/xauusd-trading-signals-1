@@ -287,6 +287,54 @@ signalElement.innerHTML =
         console.error(error);
     }
 }
+   function backtest15Minutes(points) {
+    const results = [];
+    const sortedPoints = [...points].sort(
+        (a, b) => Number(a.t) - Number(b.t)
+    );
+
+    for (let i = 30; i < sortedPoints.length; i++) {
+        const history = sortedPoints.slice(0, i + 1);
+        const prices = history.map(item => Number(item.p));
+
+        const ema9 = calculateEMA(prices, 9);
+        const ema21 = calculateEMA(prices, 21);
+        const rsi = calculateRSI(prices, 14);
+
+        if (rsi === null) continue;
+
+        let signal = "WAIT";
+
+        if (ema9 > ema21 && rsi > 50 && rsi < 70) {
+            signal = "BUY";
+        } else if (ema9 < ema21 && rsi < 50 && rsi > 30) {
+            signal = "SELL";
+        }
+
+        const future = sortedPoints.find(
+            item => Number(item.t) >= Number(sortedPoints[i].t) + 900
+        );
+
+        if (!future || signal === "WAIT") continue;
+
+        const entry = Number(sortedPoints[i].p);
+        const exit = Number(future.p);
+
+        const won =
+            signal === "BUY" ? exit > entry :
+            signal === "SELL" ? exit < entry : false;
+
+        results.push({
+            signal,
+            entry,
+            exit,
+            won,
+            change: signal === "BUY" ? exit - entry : entry - exit
+        });
+    }
+
+    return results;
+} 
 </script>
 </body>
 </html>
