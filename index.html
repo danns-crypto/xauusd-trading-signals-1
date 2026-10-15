@@ -166,6 +166,60 @@
 </footer>
 <script>
 
+function calculateEMA(prices, period) {
+    const multiplier = 2 / (period + 1);
+    let ema = prices[0];
+
+    for (let i = 1; i < prices.length; i++) {
+        ema = (prices[i] * multiplier) +
+              (ema * (1 - multiplier));
+    }
+
+    return ema;
+}
+
+function calculateRSI(prices, period = 14) {
+    if (prices.length <= period) {
+        return null;
+    }
+
+    let gains = 0;
+    let losses = 0;
+
+    for (let i = 1; i <= period; i++) {
+        const change = prices[i] - prices[i - 1];
+
+        if (change > 0) {
+            gains += change;
+        } else {
+            losses += Math.abs(change);
+        }
+    }
+
+    let averageGain = gains / period;
+    let averageLoss = losses / period;
+
+    for (let i = period + 1; i < prices.length; i++) {
+        const change = prices[i] - prices[i - 1];
+        const gain = Math.max(change, 0);
+        const loss = Math.max(-change, 0);
+
+        averageGain =
+            ((averageGain * (period - 1)) + gain) / period;
+
+        averageLoss =
+            ((averageLoss * (period - 1)) + loss) / period;
+    }
+
+    if (averageLoss === 0) {
+        return averageGain === 0 ? 50 : 100;
+    }
+
+    const relativeStrength = averageGain / averageLoss;
+
+    return 100 - (100 / (1 + relativeStrength));
+}
+
 async function testSignal() {
     const signalElement = document.getElementById("signal");
 
@@ -190,8 +244,30 @@ async function testSignal() {
             throw new Error("Not enough price data");
         }
 
-        signalElement.innerHTML =
-            "📊 Received " + prices.length + " gold prices";
+        
+const ema9 = calculateEMA(prices, 9);
+const ema21 = calculateEMA(prices, 21);
+const rsi = calculateRSI(prices, 14);
+
+if (rsi === null) {
+    throw new Error("Not enough prices for RSI");
+}
+
+let signal = "WAIT";
+
+if (ema9 > ema21 && rsi > 50 && rsi < 70) {
+    signal = "BUY";
+} else if (ema9 < ema21 && rsi < 50 && rsi > 30) {
+    signal = "SELL";
+}
+
+signalElement.innerHTML =
+    (signal === "BUY" ? "🟢 " :
+     signal === "SELL" ? "🔴 " : "🟡 ") +
+    signal +
+    "<br>EMA 9: " + ema9.toFixed(2) +
+    "<br>EMA 21: " + ema21.toFixed(2) +
+    "<br>RSI 14: " + rsi.toFixed(2);
 
     } catch (error) {
         signalElement.innerHTML =
