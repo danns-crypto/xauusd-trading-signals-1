@@ -364,6 +364,27 @@ function showBacktestResults(results) {
     const ties = results.filter(r => r.change === 0).length;
     const total = results.length;
 
+const winningMoves = results
+    .filter(r => r.change > 0)
+    .map(r => r.change);
+
+const losingMoves = results
+    .filter(r => r.change < 0)
+    .map(r => Math.abs(r.change));
+
+const averageWin = winningMoves.length
+    ? winningMoves.reduce((sum, move) => sum + move, 0) / winningMoves.length
+    : 0;
+
+const averageLoss = losingMoves.length
+    ? losingMoves.reduce((sum, move) => sum + move, 0) / losingMoves.length
+    : 0;
+
+const netMovement = results.reduce(
+    (sum, r) => sum + r.change,
+    0
+);
+
     const winRate = total > 0
         ? (wins / total * 100).toFixed(1)
         : "0.0";
@@ -378,7 +399,12 @@ const decisiveWinRate = decisiveTrades > 0
         "<p>Losses: " + losses + "</p>" +
         "<p>Ties: " + ties + "</p>" +
         "<p>Win rate (all outcomes): " + winRate + "%</p>" +
-"<p>Win rate (excluding ties): " + decisiveWinRate + "%</p>";
+
+"<p>Win rate (excluding ties): " + decisiveWinRate + "%</p>" +
+"<p>Average winning move: " + averageWin.toFixed(2) + "</p>" +
+"<p>Average losing move: " + averageLoss.toFixed(2) + "</p>" +
+"<p>Net price movement: " + netMovement.toFixed(2) + "</p>";
+
 }
 
 </script>
