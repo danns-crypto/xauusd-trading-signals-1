@@ -247,13 +247,18 @@ async function testSignal() {
     .sort((a, b) => Number(a.t) - Number(b.t));
 
 const prices = points.map(item => Number(item.p));
+
+console.log("Historical price records:", prices.length);
+
+if (prices.length < 50) {
+    throw new Error("Not enough price data for EMA 50");
+}
+
 const backtestResults = backtest15Minutes(points);
+
 console.log("15-minute backtest results:", backtestResults);
+
 showBacktestResults(backtestResults);
-   console.log("Historical price records:", prices.length);  
-        if (prices.length < 30) {
-            throw new Error("Not enough price data");
-        }
 
         
 const ema9 = calculateEMA(prices, 9);
