@@ -289,10 +289,10 @@ signalElement.innerHTML =
     new Date(Number(points[points.length - 1].t) * 1000).toLocaleString();
 
     } catch (error) {
-        signalElement.innerHTML =
-            "⚠️ Could not load gold prices. Try again.";
-        console.error(error);
-    }
+    signalElement.innerHTML =
+        "⚠️ Error: " + error.message;
+    console.error(error);
+}
 }
    
 function backtest15Minutes(points) {
