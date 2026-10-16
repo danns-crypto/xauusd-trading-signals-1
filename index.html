@@ -367,14 +367,18 @@ function showBacktestResults(results) {
     const winRate = total > 0
         ? (wins / total * 100).toFixed(1)
         : "0.0";
-
+const decisiveTrades = wins + losses;
+const decisiveWinRate = decisiveTrades > 0
+    ? (wins / decisiveTrades * 100).toFixed(1)
+    : "0.0";
     document.getElementById("backtestResults").innerHTML =
         "<h3>15-Minute Backtest</h3>" +
         "<p>Total trades: " + total + "</p>" +
         "<p>Wins: " + wins + "</p>" +
         "<p>Losses: " + losses + "</p>" +
         "<p>Ties: " + ties + "</p>" +
-        "<p>Win rate: " + winRate + "%</p>";
+        "<p>Win rate (all outcomes): " + winRate + "%</p>" +
+"<p>Win rate (excluding ties): " + decisiveWinRate + "%</p>";
 }
 
 </script>
