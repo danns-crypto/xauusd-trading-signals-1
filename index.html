@@ -260,9 +260,12 @@ console.log("15-minute backtest results:", backtestResults);
 showBacktestResults(backtestResults);
 
         
+
 const ema9 = calculateEMA(prices, 9);
 const ema21 = calculateEMA(prices, 21);
+const ema50 = calculateEMA(prices, 50);
 const rsi = calculateRSI(prices, 14);
+;
 
 if (rsi === null) {
     throw new Error("Not enough prices for RSI");
@@ -325,6 +328,9 @@ function backtest15Minutes(points) {
         if (rsi === null) continue;
 
         let signal = "WAIT";
+
+const currentPrice = prices[prices.length - 1];
+
 
 const currentPrice = prices[prices.length - 1];
 
