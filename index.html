@@ -221,7 +221,7 @@ function calculateRSI(prices, period = 14) {
 
     return 100 - (100 / (1 + relativeStrength));
 }
-
+window.testSignal = testSignal;
 async function testSignal() {
     alert("testSignal started");
     const signalElement = document.getElementById("signal");
